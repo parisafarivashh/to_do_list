@@ -22,9 +22,12 @@ class SignUpView(CreateAPIView):
 
 class Login(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token = Token.objects.get(user=user)
+        try:
+            serializer = self.serializer_class(data=request.data,
+                                               context={'request': request})
+            serializer.is_valid(raise_exception=True)
+            user = serializer.validated_data['user']
+            token = Token.objects.get(user=user)
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         return Response({'token': token.key})
