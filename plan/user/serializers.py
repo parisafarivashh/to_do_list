@@ -1,6 +1,7 @@
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import User, Token
+from .models import User
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -14,3 +15,33 @@ class SignUpSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    new_password = serializers.CharField(
+        write_only=True,
+        required=True,
+        validators=[validate_password],
+    )
+    repeat_password = serializers.CharField(
+        write_only=True,
+        required=True,
+        validators=[validate_password],
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'new_password', 'repeat_password']
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['repeat_password']:
+            raise serializers.ValidationError(
+                {'password': "Password fields didn't match"}
+            )
+        return attrs
+
+    def update(self,  instance, validated_data):
+        instance.set_password(validated_data['new_password'])
+        instance.save()
+        return instance
+

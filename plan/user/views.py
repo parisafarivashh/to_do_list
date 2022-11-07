@@ -1,11 +1,11 @@
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import AllowAny
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
 
-from .models import Token
-from .serializers import SignUpSerializer
+from .models import Token, User
+from .serializers import SignUpSerializer, ChangePasswordSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -16,11 +16,10 @@ class SignUpView(CreateAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class Login(ObtainAuthToken):
+class SignInView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         try:
             serializer = self.serializer_class(data=request.data,
@@ -30,4 +29,29 @@ class Login(ObtainAuthToken):
             token = Token.objects.get(user=user)
         except:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        return Response({'token': token.key})
+        return Response(data={'token': token.key}, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [AllowAny]
+
+    def put(self, request, *args, **kwargs):
+        username = request.data['username']
+        try:
+            user = User.objects.get(username=username)
+            serializer = self.serializer_class(user, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+        except User.DoesNotExist:
+            return Response(
+                data={'message': 'username dose not exist'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            data={'message': 'Password Changed Successfully'},
+            status=status.HTTP_200_OK,
+        )
+
