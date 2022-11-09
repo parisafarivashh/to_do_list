@@ -25,4 +25,5 @@ class RetrieveToDoSerializers(serializers.ModelSerializer):
     class Meta:
         model = ToDo
         fields = '__all__'
+        depth = 1
 
