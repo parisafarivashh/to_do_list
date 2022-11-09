@@ -103,4 +103,3 @@ db.sqlite3
 pytest.ini
 # Production configs and environment variables for production
 deploy/*production*
-
