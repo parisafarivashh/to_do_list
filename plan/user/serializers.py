@@ -45,3 +45,9 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+class GetUserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'photo']
+

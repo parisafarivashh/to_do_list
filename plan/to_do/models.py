@@ -3,6 +3,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from user.models import User
+
 
 class Organization(models.Model):
     class Name(models.TextChoices):
@@ -26,10 +28,19 @@ class ToDo(models.Model):
     )
     tick = models.BooleanField(default=False)
     date = models.DateTimeField(default=django.utils.timezone.now)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False
+    )
     organization = models.ForeignKey(
         Organization,
         on_delete=models.CASCADE,
         blank=False,
         null=False,
     )
+
+    class Meta:
+        ordering = ('-date',)
 

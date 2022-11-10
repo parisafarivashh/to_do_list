@@ -17,11 +17,17 @@ class ListOrganizationApi(ListAPIView):
 
 class ToDoView(mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                mixins.DestroyModelMixin, mixins.UpdateModelMixin,
-               GenericAPIView):
+               mixins.ListModelMixin, GenericAPIView):
 
     permission_classes = [IsAuthenticated]
-    queryset = ToDo.objects.all()
     lookup_field = 'id'
+
+    def get_queryset(self):
+        queryset = ToDo.objects.filter(user=self.request.user).all()
+        date = self.request.query_params.get('date')
+        if date is not None:
+            queryset = queryset.filter(date=date)
+        return queryset
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -33,6 +39,7 @@ class ToDoView(mixins.RetrieveModelMixin, mixins.CreateModelMixin,
         serializer = CreateToDoSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
         obj = serializer.validated_data
+        obj.update(user=self.request.user)
         ToDo.objects.create(**obj)
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
@@ -40,7 +47,7 @@ class ToDoView(mixins.RetrieveModelMixin, mixins.CreateModelMixin,
         if id:
             return self.retrieve(request, id)
         else:
-            return NotFound
+            return self.list(request)
 
     def patch(self, request, id=None):
         return self.update(request, id, partial=True)
