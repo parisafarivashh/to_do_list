@@ -19,12 +19,10 @@ class CreateToDoSerializers(serializers.ModelSerializer):
         model = ToDo
         fields = ['organization', 'title', 'description', 'priority',  'date']
 
-    def validate(self, attrs):
-        if attrs['date'].date() <= datetime.datetime.today().date():
-            raise serializers.ValidationError(
-                {'message': "You Can Not Set Past Time"}
-            )
-        return attrs
+    def validate_date(self, value):
+        if value.date() < datetime.datetime.today().date():
+            raise serializers.ValidationError("You Can Not Set Past Time")
+        return value
 
 
 class UpdateToDoSerializers(serializers.ModelSerializer):
@@ -32,12 +30,10 @@ class UpdateToDoSerializers(serializers.ModelSerializer):
         model = ToDo
         fields = ['title', 'description', 'priority', 'date', 'tick']
 
-    def validate(self, attrs):
-        if attrs['date'].date() <= datetime.datetime.today().date():
-            raise serializers.ValidationError(
-                {'message': "You Can Not Set Past Time"}
-            )
-        return attrs
+    def validate_date(self, value):
+        if value.date() < datetime.datetime.today().date():
+            raise serializers.ValidationError("You Can Not Set Past Time")
+        return value
 
 
 class RetrieveToDoSerializers(serializers.ModelSerializer):
