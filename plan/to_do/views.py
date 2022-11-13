@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Organization, ToDo
+from .permissions import OwnTask
 from .serializers import OrganizationSerializer, CreateToDoSerializers, \
     UpdateToDoSerializers, RetrieveToDoSerializers
 
@@ -19,12 +20,15 @@ class ToDoView(mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                mixins.DestroyModelMixin, mixins.UpdateModelMixin,
                mixins.ListModelMixin, GenericAPIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, OwnTask]
     lookup_field = 'id'
 
     def get_queryset(self):
         queryset = ToDo.objects.filter(user=self.request.user).all()
         date = self.request.query_params.get('date')
+        organization = self.request.query_params.get('organization')
+        if organization is not None:
+            queryset = queryset.filter(organization=organization)
         if date is not None:
             queryset = queryset.filter(date=date)
         return queryset

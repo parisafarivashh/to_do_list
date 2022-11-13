@@ -66,6 +66,13 @@ class User(AbstractBaseUser):
         verbose_name_plural = 'user'
         ordering = ['username']
 
+    @property
+    def get_photo(self):
+        try:
+            return self.photo.url
+        except ValueError:
+            return None
+
 
 class Token(Token):
     user = models.ForeignKey(
