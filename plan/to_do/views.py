@@ -1,4 +1,5 @@
-from rest_framework import mixins, status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import mixins, status, filters
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -14,6 +15,15 @@ class ListOrganizationApi(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = OrganizationSerializer
     queryset = Organization.objects.all()
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
+    filterset_fields = ['name']
+    search_fields = ['^name']
+    ordering_fields = '__all__'
+    ordering = ['id']  # default ordering
 
 
 class ToDoView(mixins.RetrieveModelMixin, mixins.CreateModelMixin,
