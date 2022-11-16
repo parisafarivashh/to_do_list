@@ -18,6 +18,9 @@ class Organization(models.Model):
         max_length=9,
     )
 
+    def __str__(self):
+        return self.name
+
 
 class ToDo(models.Model):
     title = models.CharField(max_length=255, null=False, blank=False)
@@ -43,4 +46,7 @@ class ToDo(models.Model):
 
     class Meta:
         ordering = ('-date',)
+
+    def __str__(self):
+        return self.title
 

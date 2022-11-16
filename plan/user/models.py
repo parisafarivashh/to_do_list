@@ -73,6 +73,9 @@ class User(AbstractBaseUser):
         except ValueError:
             return None
 
+    def __str__(self):
+        return self.username
+
 
 class Token(Token):
     user = models.ForeignKey(
