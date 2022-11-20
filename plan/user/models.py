@@ -39,6 +39,7 @@ class User(AbstractBaseUser):
 
     username = models.CharField(max_length=63, unique=True)
     password = models.CharField(max_length=127)
+    is_superuser = models.BooleanField(default=False)
     super_admin = models.BooleanField(default=False)
     photo = models.ImageField(
         upload_to=user_directory_path,

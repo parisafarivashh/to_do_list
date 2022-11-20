@@ -1,17 +1,18 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 
 from .models import Organization, ToDo
 
 
 @admin.register(Organization)
-class OrganizationAdmin(admin.ModelAdmin):
+class OrganizationAdmin(GuardedModelAdmin):
     list_display = ['id', 'name']
     list_filter = ['id', 'name']
     search_fields = ['id', 'name']
 
 
 @admin.register(ToDo)
-class ToDoOAdmin(admin.ModelAdmin):
+class ToDoOAdmin(GuardedModelAdmin):
     list_display = [
         'id',
         'title',
