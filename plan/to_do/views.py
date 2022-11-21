@@ -55,6 +55,7 @@ class ToDoView(mixins.RetrieveModelMixin, mixins.CreateModelMixin,
         obj = serializer.validated_data
         obj.update(user=self.request.user)
         ToDo.objects.create(**obj)
+        serializer.save()
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
     def get(self, request, id=None):

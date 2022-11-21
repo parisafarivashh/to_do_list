@@ -15,7 +15,8 @@ class OrganizationSerializer(serializers.ModelSerializer):
 class CreateToDoSerializers(serializers.ModelSerializer):
     class Meta:
         model = ToDo
-        fields = ['organization', 'title', 'description', 'priority',  'date']
+        fields = ['id','organization', 'title', 'description', 'priority',
+                  'date']
 
     def validate_date(self, value):
         if value.date() < datetime.datetime.today().date():
