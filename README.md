@@ -9,6 +9,7 @@
   - after finishing the task the user can update tick of task 
   - users can see a list of self tasks or delete it
   
+ 
 - [x] used custom user
 - [x] used custom middelware
 - [x] test for API`S
@@ -17,3 +18,9 @@
 - [x] validation in serializers 
 - [x] permissions
 - [x] used model_bakery in test 
+- [x] custom Django command to populate data to the DB with factory boy and faker
+
+        - python manage.py create_user
+        - python manage.py create_task
+  
+
