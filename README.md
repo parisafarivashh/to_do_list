@@ -16,3 +16,4 @@
 - [x] filtering, search and ordering in API`S
 - [x] validation in serializers 
 - [x] permissions
+- [x] used model_bakery in test 
