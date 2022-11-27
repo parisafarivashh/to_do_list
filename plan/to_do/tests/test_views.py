@@ -1,7 +1,9 @@
+import datetime
 import json
 import pytest
 
 from django.contrib.auth import get_user_model
+from model_bakery import baker
 from rest_framework.test import APIClient
 
 from user.models import Token
@@ -16,14 +18,13 @@ class SetUp:
     @pytest.fixture
     def set_up(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(
-            username='samira',
-            password='123456'
-        )
+        self.user = baker.make(User)
         self.access_token = Token.objects.get(user=self.user).key
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.access_token)
-        self.organization = Organization.objects.create(name='personal')
-        self.organization2 = Organization.objects.create(name='work')
+
+        self.organization = baker.make(Organization)
+        self.organization2 = baker.make(Organization)
+
         self.task = ToDo.objects.create(
             organization=self.organization,
             title='new-task',
@@ -48,7 +49,7 @@ class TestViewToDo(SetUp):
             "organization": self.organization.id,
             "title": "task",
             "description": "description",
-            "date": '2022-11-21',
+            "date": str(datetime.date.today()),
         })
         response = self.client.post(
             path='/task/',
@@ -59,7 +60,7 @@ class TestViewToDo(SetUp):
         assert len(response.data) == 6
         assert response.data['id'] is not None
         assert response.data['title'] == 'task'
-        assert response.data['date'] == '2022-11-21T00:00:00Z'
+        assert response.data['date'] == f'{datetime.date.today()}T00:00:00Z'
 
     @pytest.mark.django_db
     def test_task_update(self, set_up):
