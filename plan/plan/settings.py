@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'to_do',
     'user',
+    'cli',
 
 ]
 REST_FRAMEWORK = {
