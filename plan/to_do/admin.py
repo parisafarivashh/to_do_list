@@ -48,16 +48,16 @@ class ToDoOAdmin(admin.ModelAdmin):
         'user__id',
         'user__username',
     ]
-    readonly_fields = [
-        'id',
-        'title',
-        'description',
-        'priority',
-        'tick',
-        'date',
-        'organization',
-        'user',
-    ]
+    #readonly_fields = [
+    #    'id',
+     #   'title',
+    #    'description',
+    #    'priority',
+    #    'tick',
+    #    'date',
+    #    'organization',
+    #    'user',
+    #]
 
     def user_name(self, obj):
         return obj.user.username

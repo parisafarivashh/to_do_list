@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django_extensions',
+    'graphene_django',
 
     'to_do',
     'user',
@@ -102,7 +103,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'django_project',
-        'USER': 'djangouser',
+        'USER': 'postgres',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': 5432,
