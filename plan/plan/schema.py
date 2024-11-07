@@ -45,22 +45,24 @@ class CreateOrganizationMutation(graphene.Mutation):
 
 
 class Query(graphene.ObjectType):
-    todos = graphene.List(TodosType)
-    organizations = graphene.List(OrganizationType)
-    users = graphene.List(UserType)
+    todos = graphene.List(TodosType, first=graphene.Int(), last=graphene.Int())
+    organizations = graphene.List(OrganizationType, first=graphene.Int(), last=graphene.Int())
+    users = graphene.List(UserType, first=graphene.Int(), last=graphene.Int())
 
-    def resolve_todos(self, info):
-        return ToDo.objects.all()
+    def resolve_todos(self, info, first = None, last = None):
+        return ToDo.objects.all()[first: last]
 
-    def resolve_organizations(self, info):
-        return Organization.objects.all()
+    def resolve_organizations(self, info, first = None, last = None):
+        return Organization.objects.all()[first: last]
 
-    def resolve_users(self, info):
-        return User.objects.all()
+    def resolve_users(self, info, first = None, last = None):
+        return User.objects.all()[first: last]
+
 
 class Mutate(graphene.ObjectType):
     create_todo = CreateToDoMutation.Field()
     create_organization = CreateOrganizationMutation.Field()
+
 
 schema = graphene.Schema(query=Query, mutation=Mutate)
 
