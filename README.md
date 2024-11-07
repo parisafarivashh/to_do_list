@@ -19,6 +19,7 @@
 - [x] permissions
 - [x] used model_bakery in test 
 - [x] custom Django command to populate data to the DB with factory boy and faker
+- [x] used Graphql to fetch and create todos, organizations, users
 
         - python manage.py create_user
         - python manage.py create_task

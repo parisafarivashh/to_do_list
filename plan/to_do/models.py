@@ -34,14 +34,14 @@ class ToDo(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        blank=False,
-        null=False
+        blank=True,
+        null=True
     )
     organization = models.ForeignKey(
         Organization,
         on_delete=models.CASCADE,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
     )
 
     class Meta:
