@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.deprecation import MiddlewareMixin
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from rest_framework.response import Response
 
 
 class LogTimeTakenMiddleware(MiddlewareMixin):
@@ -25,7 +26,7 @@ class LogTimeTakenMiddleware(MiddlewareMixin):
 class SendResponseDataToWebsocket(MiddlewareMixin):
 
     def process_response(self, request, response):
-        if response is None:
+        if not isinstance(response, Response):
             return response
 
         path = request.path.replace('/api/', '')
