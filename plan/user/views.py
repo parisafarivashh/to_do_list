@@ -29,7 +29,8 @@ class SignInView(ObtainAuthToken):
             serializer.is_valid(raise_exception=True)
             user = serializer.validated_data['user']
             token = Token.objects.get(user=user)
-        except:
+        except Exception as exp:
+            print(exp)
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         return Response(data={'token': token.key}, status=status.HTTP_200_OK)
 

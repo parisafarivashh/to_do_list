@@ -18,8 +18,9 @@
 - [x] validation in serializers 
 - [x] permissions
 - [x] used model_bakery in test 
-- [x] custom Django command to populate data to the DB with factory boy and faker
 - [x] used Graphql to fetch and create todos, organizations, users
+- [x] used Django channel for websocket(used custom auth middleware for channel)
+- [x] custom Django command to populate data to the DB with factory boy and faker
 
         - python manage.py create_user
         - python manage.py create_task
